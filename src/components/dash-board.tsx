@@ -20,7 +20,7 @@ import {
   Card,
 } from '@/components/ui/card';
 
-export function MealPlan() {
+export function DashBoard() {
   return (
     <div className="flex h-screen w-full">
       <div className="hidden border-r bg-gray-100/40 lg:block dark:bg-gray-800/40">
@@ -30,10 +30,6 @@ export function MealPlan() {
               <HeartIcon className="h-6 w-6" />
               <span className="">MyLifePal</span>
             </div>
-            <Button className="ml-auto h-8 w-8" size="icon" variant="outline">
-              <BellIcon className="h-4 w-4" />
-              <span className="sr-only">Toggle notifications</span>
-            </Button>
           </div>
           <nav className="flex-1 overflow-auto px-4 text-sm font-medium">
             <a
@@ -73,9 +69,6 @@ export function MealPlan() {
             <MenuIcon className="h-4 w-4" />
             <span className="sr-only">Toggle menu</span>
           </Button>
-          <h1 className="hidden text-lg font-semibold lg:block md:text-2xl">
-            MyLifePal
-          </h1>
           <nav className="flex flex-1 items-center justify-end gap-4">
             <form className="flex-1">
               <div className="relative">
@@ -87,6 +80,10 @@ export function MealPlan() {
                 />
               </div>
             </form>
+            <Button className="ml-auto h-8 w-8" size="icon" variant="outline">
+              <BellIcon className="h-4 w-4" />
+              <span className="sr-only">Toggle notifications</span>
+            </Button>
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <Button
@@ -123,9 +120,7 @@ export function MealPlan() {
           </nav>
         </header>
         <main className="flex flex-1 flex-col gap-4 p-4 md:gap-8 md:p-6">
-          <div className="flex items-center">
-            <h1 className="font-semibold text-lg md:text-2xl">Meal Plan</h1>
-          </div>
+          <div className="flex items-center"></div>
           <div className="grid gap-4 md:grid-cols-2">
             <Card>
               <CardHeader>

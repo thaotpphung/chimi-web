@@ -1,13 +1,13 @@
 import { useState } from 'react';
 import './App.css';
-import { MealPlan } from '@/components/meal-plan';
+import { DashBoard } from '@/components/dash-board';
 
 function App() {
   const [count, setCount] = useState(0);
 
   return (
     <>
-      <MealPlan />
+      <DashBoard />
     </>
   );
 }
