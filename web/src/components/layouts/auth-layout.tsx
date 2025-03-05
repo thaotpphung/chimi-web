@@ -2,7 +2,7 @@ import * as React from 'react';
 import { useEffect } from 'react';
 import { useNavigate, useSearchParams } from 'react-router';
 
-import logo from '@/assets/logo.svg';
+import chimi from '@/assets/chimi.png';
 import { Head } from '@/components/seo';
 import { Link } from '@/components/ui/link';
 import { paths } from '@/config/paths';
@@ -38,7 +38,7 @@ export const AuthLayout = ({ children, title }: LayoutProps) => {
               className="flex items-center text-white"
               to={paths.home.getHref()}
             >
-              <img className="h-24 w-auto" src={logo} alt="Workflow" />
+              <img className="h-24 w-auto" src={chimi} alt="Workflow" />
             </Link>
           </div>
 

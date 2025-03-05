@@ -1,14 +1,6 @@
-import { Home, PanelLeft, Folder, Users, User2 } from 'lucide-react';
+import { Folder, Home, PanelLeft, User2, Users } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { NavLink, useNavigate, useNavigation } from 'react-router';
-
-import logo from '@/assets/logo.svg';
-import { Button } from '@/components/ui/button';
-import { Drawer, DrawerContent, DrawerTrigger } from '@/components/ui/drawer';
-import { paths } from '@/config/paths';
-import { useLogout } from '@/lib/auth';
-import { ROLES, useAuthorization } from '@/lib/authorization';
-import { cn } from '@/utils/cn';
 
 import {
   DropdownMenu,
@@ -19,6 +11,14 @@ import {
 } from '../ui/dropdown';
 import { Link } from '../ui/link';
 
+import chimi from '@/assets/chimi.png';
+import { Button } from '@/components/ui/button';
+import { Drawer, DrawerContent, DrawerTrigger } from '@/components/ui/drawer';
+import { paths } from '@/config/paths';
+import { useLogout } from '@/lib/auth';
+import { ROLES, useAuthorization } from '@/lib/authorization';
+import { cn } from '@/utils/cn';
+
 type SideNavigationItem = {
   name: string;
   to: string;
@@ -27,11 +27,9 @@ type SideNavigationItem = {
 
 const Logo = () => {
   return (
-    <Link className="flex items-center text-white" to={paths.home.getHref()}>
-      <img className="h-8 w-auto" src={logo} alt="Workflow" />
-      <span className="text-sm font-semibold text-white">
-        Bulletproof React
-      </span>
+    <Link className="flex items-center text-white" to="/">
+      <img className="h-8 w-auto" src={chimi} alt="Workflow" />
+      <span className="text-sm font-semibold text-white">Chimi</span>
     </Link>
   );
 };
@@ -93,7 +91,7 @@ export function DashboardLayout({ children }: { children: React.ReactNode }) {
   ].filter(Boolean) as SideNavigationItem[];
 
   return (
-    <div className="flex min-h-screen w-full flex-col bg-muted/40">
+    <div className="bg-muted/40 flex min-h-screen w-full flex-col">
       <aside className="fixed inset-y-0 left-0 z-10 hidden w-60 flex-col border-r bg-black sm:flex">
         <nav className="flex flex-col items-center gap-4 px-2 py-4">
           <div className="flex h-16 shrink-0 items-center px-4">
@@ -125,7 +123,7 @@ export function DashboardLayout({ children }: { children: React.ReactNode }) {
         </nav>
       </aside>
       <div className="flex flex-col sm:gap-4 sm:py-4 sm:pl-60">
-        <header className="sticky top-0 z-30 flex h-14 items-center justify-between gap-4 border-b bg-background px-4 sm:static sm:h-auto sm:justify-end sm:border-0 sm:bg-transparent sm:px-6">
+        <header className="bg-background sticky top-0 z-30 flex h-14 items-center justify-between gap-4 border-b px-4 sm:static sm:h-auto sm:justify-end sm:border-0 sm:bg-transparent sm:px-6">
           <Progress />
           <Drawer>
             <DrawerTrigger asChild>
