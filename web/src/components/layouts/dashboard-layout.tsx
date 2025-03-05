@@ -1,5 +1,6 @@
 import {
   Activity,
+  Bell,
   Calendar,
   ChefHat,
   ClipboardList,
@@ -159,12 +160,9 @@ export function DashboardLayout({ children }: { children: React.ReactNode }) {
                 <span className="sr-only">Toggle Menu</span>
               </Button>
             </DrawerTrigger>
-            <DrawerContent
-              side="left"
-              className="bg-black pt-10 text-white sm:max-w-60"
-            >
+            <DrawerContent side="left" className="pt-10 sm:max-w-60">
               <nav className="grid gap-6 text-lg font-medium">
-                <div className="flex h-16 shrink-0 items-center px-4">
+                <div className="mx-auto flex h-16 shrink-0 items-center px-4">
                   <Logo />
                 </div>
                 {navigation.map((item) => (
@@ -174,17 +172,14 @@ export function DashboardLayout({ children }: { children: React.ReactNode }) {
                     end
                     className={({ isActive }) =>
                       cn(
-                        '',
+                        'hover:bg-secondary',
                         'group flex flex-1 w-full items-center rounded-md p-2 text-base font-medium',
-                        isActive && 'bg-gray-900 text-white',
+                        isActive && ' bg-secondary',
                       )
                     }
                   >
                     <item.icon
-                      className={cn(
-                        'text-gray-400 group-hover:text-gray-300',
-                        'mr-4 size-6 shrink-0',
-                      )}
+                      className={cn('', 'mr-4 size-6 shrink-0')}
                       aria-hidden="true"
                     />
                     {item.name}
@@ -194,6 +189,14 @@ export function DashboardLayout({ children }: { children: React.ReactNode }) {
             </DrawerContent>
           </Drawer>
           <DropdownMenu>
+            <Button
+              variant="outline"
+              size="icon"
+              className="overflow-hidden rounded-full"
+            >
+              <span className="sr-only">Notification</span>
+              <Bell className="size-6 rounded-full" />
+            </Button>
             <DropdownMenuTrigger asChild>
               <Button
                 variant="outline"
@@ -204,12 +207,13 @@ export function DashboardLayout({ children }: { children: React.ReactNode }) {
                 <User2 className="size-6 rounded-full" />
               </Button>
             </DropdownMenuTrigger>
+
             <DropdownMenuContent align="end">
               <DropdownMenuItem
                 onClick={() => navigate(paths.app.profile.getHref())}
                 className={cn('block px-4 py-2 text-sm text-gray-700')}
               >
-                Your Profile
+                Settings
               </DropdownMenuItem>
               <DropdownMenuSeparator />
               <DropdownMenuItem
