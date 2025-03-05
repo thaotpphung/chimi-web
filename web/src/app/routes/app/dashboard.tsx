@@ -1,5 +1,5 @@
 import { ContentLayout } from '@/components/layouts';
-import Dashboard from '@/features/dashboard/components/dashboard';
+import Dashboard from '@/features/dashboard/components/page';
 import { useUser } from '@/lib/auth';
 
 const DashboardRoute = () => {

@@ -1,10 +1,10 @@
-import { render, waitFor } from '@/testing/test-utils';
-
 import { Head } from '../head';
+
+import { render, waitFor } from '@/testing/test-utils';
 
 test('should add proper page title and meta description', async () => {
   const title = 'Hello World';
-  const titleSuffix = ' | Bulletproof React';
+  const titleSuffix = ' | Chimi';
   const description = 'This is a description';
 
   render(<Head title={title} description={description} />);

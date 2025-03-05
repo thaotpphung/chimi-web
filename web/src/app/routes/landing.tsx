@@ -2,7 +2,7 @@ import { useNavigate } from 'react-router';
 
 import { Head } from '@/components/seo';
 import { paths } from '@/config/paths';
-import Landing from '@/features/landing/components/landing';
+import Landing from '@/features/landing/components/page';
 import { useUser } from '@/lib/auth';
 
 const LandingRoute = () => {
@@ -19,7 +19,7 @@ const LandingRoute = () => {
 
   return (
     <>
-      <Head description="Welcome to bulletproof react" />
+      <Head description="Welcome to Chimi" />
       <Landing />
     </>
   );
