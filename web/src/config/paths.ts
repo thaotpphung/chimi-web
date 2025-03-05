@@ -26,6 +26,30 @@ export const paths = {
       path: '',
       getHref: () => '/app',
     },
+    mealplans: {
+      path: '',
+      getHref: () => '/mealplans',
+    },
+    recipes: {
+      path: '',
+      getHref: () => '/recipes',
+    },
+    health: {
+      path: '',
+      getHref: () => '/health',
+    },
+    shopping: {
+      path: '',
+      getHref: () => '/shopping',
+    },
+    tasks: {
+      path: '',
+      getHref: () => '/tasks',
+    },
+    calendar: {
+      path: '',
+      getHref: () => '/calendar',
+    },
     discussions: {
       path: 'discussions',
       getHref: () => '/app/discussions',

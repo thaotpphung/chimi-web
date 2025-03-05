@@ -1,4 +1,15 @@
-import { Folder, Home, PanelLeft, User2, Users } from 'lucide-react';
+import {
+  Activity,
+  Calendar,
+  ChefHat,
+  ClipboardList,
+  Home,
+  ListChecks,
+  PanelLeft,
+  ShoppingCart,
+  User2,
+  Users,
+} from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { NavLink, useNavigate, useNavigation } from 'react-router';
 
@@ -27,9 +38,9 @@ type SideNavigationItem = {
 
 const Logo = () => {
   return (
-    <Link className="flex items-center text-white" to="/">
-      <img className="h-8 w-auto" src={chimi} alt="Workflow" />
-      <span className="text-sm font-semibold text-white">Chimi</span>
+    <Link className="flex items-center " to="/">
+      <img className="h-14 w-auto" src={chimi} alt="Workflow" />
+      <span className="text-xl font-semibold ">Chimi</span>
     </Link>
   );
 };
@@ -80,11 +91,30 @@ export function DashboardLayout({ children }: { children: React.ReactNode }) {
     onSuccess: () => navigate(paths.auth.login.getHref(location.pathname)),
   });
   const { checkAccess } = useAuthorization();
+
   const navigation = [
     { name: 'Dashboard', to: paths.app.dashboard.getHref(), icon: Home },
-    { name: 'Discussions', to: paths.app.discussions.getHref(), icon: Folder },
+    { name: 'Meal Plans', to: paths.app.mealplans.getHref(), icon: ChefHat },
+    { name: 'Recipes', to: paths.app.recipes.getHref(), icon: ClipboardList },
+    {
+      name: 'Health & Fitness',
+      to: paths.app.health.getHref(),
+      icon: Activity,
+    },
+    {
+      name: 'Shopping List',
+      to: paths.app.shopping.getHref(),
+      icon: ShoppingCart,
+    },
+    { name: 'Tasks', to: paths.app.tasks.getHref(), icon: ListChecks },
+    {
+      name: 'Calendar',
+      to: paths.app.calendar.getHref(),
+      icon: Calendar,
+    },
+    // { name: 'Discussions', to: paths.app.discussions.getHref(), icon: Folder },
     checkAccess({ allowedRoles: [ROLES.ADMIN] }) && {
-      name: 'Users',
+      name: 'Family Members',
       to: paths.app.users.getHref(),
       icon: Users,
     },
@@ -92,7 +122,7 @@ export function DashboardLayout({ children }: { children: React.ReactNode }) {
 
   return (
     <div className="bg-muted/40 flex min-h-screen w-full flex-col">
-      <aside className="fixed inset-y-0 left-0 z-10 hidden w-60 flex-col border-r bg-black sm:flex">
+      <aside className="fixed inset-y-0 left-0 z-10 hidden w-60 flex-col border-r p-3 sm:flex">
         <nav className="flex flex-col items-center gap-4 px-2 py-4">
           <div className="flex h-16 shrink-0 items-center px-4">
             <Logo />
@@ -104,17 +134,14 @@ export function DashboardLayout({ children }: { children: React.ReactNode }) {
               end={item.name !== 'Discussions'}
               className={({ isActive }) =>
                 cn(
-                  'text-gray-300 hover:bg-gray-700 hover:text-white',
+                  'hover:bg-secondary',
                   'group flex flex-1 w-full items-center rounded-md p-2 text-base font-medium',
-                  isActive && 'bg-gray-900 text-white',
+                  isActive && 'bg-secondary ',
                 )
               }
             >
               <item.icon
-                className={cn(
-                  'text-gray-400 group-hover:text-gray-300',
-                  'mr-4 size-6 shrink-0',
-                )}
+                className={cn(' ', 'mr-4 size-6 shrink-0')}
                 aria-hidden="true"
               />
               {item.name}
@@ -147,7 +174,7 @@ export function DashboardLayout({ children }: { children: React.ReactNode }) {
                     end
                     className={({ isActive }) =>
                       cn(
-                        'text-gray-300 hover:bg-gray-700 hover:text-white',
+                        '',
                         'group flex flex-1 w-full items-center rounded-md p-2 text-base font-medium',
                         isActive && 'bg-gray-900 text-white',
                       )
