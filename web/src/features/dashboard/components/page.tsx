@@ -119,7 +119,7 @@ export default function Dashboard() {
             )}
             <div>
               <p className="text-2xl font-bold">{weatherTemp}°F</p>
-              <p className="text-muted-foreground text-xs">Seattle, WA</p>
+              <p className="text-muted-foreground text-xs">Jersey City, NJ</p>
             </div>
             <div className="ml-2 border-l pl-2">
               <div className="flex items-center gap-1 text-xs">

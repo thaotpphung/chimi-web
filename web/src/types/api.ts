@@ -3,8 +3,8 @@
 // with the backend instead of manually writing them out
 
 export type BaseEntity = {
-  id: string;
-  createdAt: number;
+  id: string | number;
+  createdAt?: number;
 };
 
 export type Entity<T> = {
@@ -48,3 +48,41 @@ export type Comment = Entity<{
   discussionId: string;
   author: User;
 }>;
+
+export type Recipe = Entity<{
+  id: string;
+  title: string;
+  image: string;
+  prepTime: string;
+  cookTime: string;
+  servings: number;
+  rating: number;
+  category: string;
+  favorite: boolean;
+}>;
+
+export type Task = Entity<{
+  id: number;
+  title: string;
+  category: string;
+  assignedTo: number;
+  dueDate: string;
+  completed: boolean;
+}>;
+
+export type Event = {
+  id: number;
+  title: string;
+  date: string;
+  time: string;
+  category: string;
+  participants: number[];
+  description: string;
+};
+
+export type FamilyMember = {
+  id: number;
+  name: string;
+  initials: string;
+  image: string;
+};
