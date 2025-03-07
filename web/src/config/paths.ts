@@ -27,28 +27,32 @@ export const paths = {
       getHref: () => '/app',
     },
     mealplans: {
-      path: '',
-      getHref: () => '/mealplans',
+      path: 'mealplans',
+      getHref: () => '/app/mealplans',
     },
     recipes: {
-      path: '',
-      getHref: () => '/recipes',
+      path: 'recipes',
+      getHref: () => '/app/recipes',
     },
     health: {
-      path: '',
-      getHref: () => '/health',
+      path: 'health',
+      getHref: () => '/app/health',
     },
     shopping: {
-      path: '',
-      getHref: () => '/shopping',
+      path: 'shopping',
+      getHref: () => '/app/shopping',
     },
     tasks: {
-      path: '',
-      getHref: () => '/tasks',
+      path: 'tasks',
+      getHref: () => '/app/tasks',
     },
     calendar: {
-      path: '',
-      getHref: () => '/calendar',
+      path: 'calendar',
+      getHref: () => '/app/calendar',
+    },
+    members: {
+      path: 'members',
+      getHref: () => '/app/members',
     },
     discussions: {
       path: 'discussions',

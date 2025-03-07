@@ -116,7 +116,7 @@ export function DashboardLayout({ children }: { children: React.ReactNode }) {
     // { name: 'Discussions', to: paths.app.discussions.getHref(), icon: Folder },
     checkAccess({ allowedRoles: [ROLES.ADMIN] }) && {
       name: 'Family Members',
-      to: paths.app.users.getHref(),
+      to: paths.app.members.getHref(),
       icon: Users,
     },
   ].filter(Boolean) as SideNavigationItem[];
