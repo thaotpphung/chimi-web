@@ -3,13 +3,13 @@ import { useMemo } from 'react';
 import { createBrowserRouter } from 'react-router';
 import { RouterProvider } from 'react-router/dom';
 
-import { paths } from '@/config/paths';
-import { ProtectedRoute } from '@/lib/auth';
-
 import {
   default as AppRoot,
   ErrorBoundary as AppRootErrorBoundary,
 } from './routes/app/root';
+
+import { paths } from '@/config/paths';
+import { ProtectedRoute } from '@/lib/auth';
 
 const convert = (queryClient: QueryClient) => (m: any) => {
   const { clientLoader, clientAction, default: Component, ...rest } = m;
@@ -57,6 +57,43 @@ export const createAppRouter = (queryClient: QueryClient) =>
             import('./routes/app/discussions/discussion').then(
               convert(queryClient),
             ),
+        },
+        {
+          path: paths.app.mealplans.path,
+          lazy: () =>
+            import('./routes/app/mealplans/mealplans').then(
+              convert(queryClient),
+            ),
+        },
+        {
+          path: paths.app.recipes.path,
+          lazy: () =>
+            import('./routes/app/recipes/recipes').then(convert(queryClient)),
+        },
+        {
+          path: paths.app.health.path,
+          lazy: () =>
+            import('./routes/app/health/health').then(convert(queryClient)),
+        },
+        {
+          path: paths.app.shopping.path,
+          lazy: () =>
+            import('./routes/app/shopping/shopping').then(convert(queryClient)),
+        },
+        {
+          path: paths.app.tasks.path,
+          lazy: () =>
+            import('./routes/app/tasks/tasks').then(convert(queryClient)),
+        },
+        {
+          path: paths.app.calendar.path,
+          lazy: () =>
+            import('./routes/app/calendar/calendar').then(convert(queryClient)),
+        },
+        {
+          path: paths.app.members.path,
+          lazy: () =>
+            import('./routes/app/members/members').then(convert(queryClient)),
         },
         {
           path: paths.app.users.path,
