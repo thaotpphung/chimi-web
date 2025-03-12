@@ -209,9 +209,9 @@ export function CalendarView({
                         </div>
                         <div className="min-w-0 flex-1">
                           <div className="flex items-center justify-between">
-                            <span className="truncate text-lg font-medium">
+                            <h4 className="truncate font-medium">
                               {meal.title}
-                            </span>
+                            </h4>
                             <Badge variant="outline">{key.split('-')[3]}</Badge>
                           </div>
                           <div className="text-muted-foreground mt-1 flex items-center text-xs">

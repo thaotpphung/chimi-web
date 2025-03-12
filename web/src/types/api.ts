@@ -86,3 +86,11 @@ export type FamilyMember = {
   initials: string;
   image: string;
 };
+
+export type Ingredient = {
+  id: string;
+  name: string;
+  quantity: number;
+  unit: string;
+  note?: string;
+};

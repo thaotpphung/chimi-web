@@ -12,7 +12,8 @@ import { useState } from 'react';
 
 import { CalendarView } from './calandar-view';
 
-import { RecipeCard } from '@/components/shared/recipe-card';
+import { RecipeCard } from '@/components/containers/recipe-card';
+import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import {
   Card,
@@ -42,7 +43,7 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Recipe } from '@/types/api';
+import { Toaster, toast } from '@/components/ui/toast';
 
 const DAYS = [
   'Monday',
@@ -55,7 +56,7 @@ const DAYS = [
 ];
 const MEAL_TYPES = ['Breakfast', 'Lunch', 'Dinner', 'Snack'];
 
-// Sample recipes data
+// Sample recipes data with tags
 const RECIPES = [
   {
     id: 1,
@@ -67,6 +68,7 @@ const RECIPES = [
     rating: 4.5,
     category: 'Dinner',
     favorite: true,
+    tags: ['Italian', 'Pasta', 'Beef', 'Family Favorite'],
   },
   {
     id: 2,
@@ -78,6 +80,7 @@ const RECIPES = [
     rating: 4.0,
     category: 'Breakfast',
     favorite: false,
+    tags: ['Quick', 'Healthy', 'Vegetarian'],
   },
   {
     id: 3,
@@ -89,6 +92,7 @@ const RECIPES = [
     rating: 4.2,
     category: 'Lunch',
     favorite: true,
+    tags: ['Salad', 'Chicken', 'Healthy', 'Quick'],
   },
   {
     id: 4,
@@ -98,8 +102,9 @@ const RECIPES = [
     cookTime: '12 min',
     servings: 24,
     rating: 4.8,
-    category: 'Snack',
+    category: 'Dessert',
     favorite: true,
+    tags: ['Dessert', 'Baking', 'Kids Favorite'],
   },
   {
     id: 5,
@@ -111,6 +116,7 @@ const RECIPES = [
     rating: 4.3,
     category: 'Dinner',
     favorite: false,
+    tags: ['Asian', 'Vegetarian', 'Quick', 'Healthy'],
   },
   {
     id: 6,
@@ -122,20 +128,25 @@ const RECIPES = [
     rating: 4.7,
     category: 'Breakfast',
     favorite: true,
+    tags: ['Breakfast', 'Kids Favorite', 'Weekend'],
   },
 ];
-
-type MealPlan = Record<string, Recipe>;
 
 export default function MealPlanning() {
   const [currentWeek, setCurrentWeek] = useState('This Week');
   const [searchQuery, setSearchQuery] = useState('');
-  const [mealPlan, setMealPlan] = useState<MealPlan>({});
+  const [mealPlan, setMealPlan] = useState({});
   const [activeFilter, setActiveFilter] = useState('All');
   const [showRecipes, setShowRecipes] = useState(true);
   const [activeMealType, setActiveMealType] = useState('Breakfast');
+  const [activeTag, setActiveTag] = useState<string | null>(null);
 
-  // Filter recipes based on search query and active filter
+  // Get all unique tags from recipes
+  const allTags = Array.from(
+    new Set(RECIPES.flatMap((recipe) => recipe.tags || [])),
+  ).sort();
+
+  // Filter recipes based on search query, active filter, and active tag
   const filteredRecipes = RECIPES.filter((recipe) => {
     const matchesSearch = recipe.title
       .toLowerCase()
@@ -144,12 +155,14 @@ export default function MealPlanning() {
       activeFilter === 'All' ||
       activeFilter === recipe.category ||
       (activeFilter === 'Favorites' && recipe.favorite);
+    const matchesTag =
+      !activeTag || (recipe.tags && recipe.tags.includes(activeTag));
 
-    return matchesSearch && matchesFilter;
+    return matchesSearch && matchesFilter && matchesTag;
   });
 
   // Handle drag start
-  const handleDragStart = (e: React.DragEvent, recipe: Recipe) => {
+  const handleDragStart = (e, recipe) => {
     try {
       const recipeData = JSON.stringify(recipe);
       e.dataTransfer.setData('recipe', recipeData);
@@ -161,17 +174,13 @@ export default function MealPlanning() {
   };
 
   // Handle drag over
-  const handleDragOver = (e: React.DragEvent<HTMLDivElement>) => {
+  const handleDragOver = (e) => {
     e.preventDefault();
     e.dataTransfer.dropEffect = 'copy';
   };
 
   // Handle drop on week view
-  const handleDrop = (
-    e: React.DragEvent<HTMLDivElement>,
-    day: string,
-    mealType: string,
-  ) => {
+  const handleDrop = (e, day, mealType) => {
     e.preventDefault();
     const recipe = JSON.parse(e.dataTransfer.getData('recipe'));
 
@@ -182,11 +191,7 @@ export default function MealPlanning() {
   };
 
   // Handle drop on calendar view
-  const handleCalendarDrop = (
-    e: React.DragEvent,
-    date: string,
-    mealType?: string,
-  ) => {
+  const handleCalendarDrop = (e, date, mealType) => {
     e.preventDefault();
 
     try {
@@ -213,16 +218,38 @@ export default function MealPlanning() {
   };
 
   // Get meal for a specific day and meal type
-  const getMeal = (day: string, mealType: string) => {
+  const getMeal = (day, mealType) => {
     return mealPlan[`${day}-${mealType}`];
   };
 
   // Remove meal from plan
-  const removeMeal = (key: string) => {
+  const removeMeal = (key) => {
     setMealPlan((prev) => {
       const newPlan = { ...prev };
       delete newPlan[key];
       return newPlan;
+    });
+  };
+
+  // Add recipe to meal plan
+  const addRecipeToMealPlan = (recipe, date, mealType) => {
+    if (!recipe) return;
+
+    // Format date string (YYYY-MM-DD)
+    const formattedDate =
+      date instanceof Date
+        ? `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`
+        : date;
+
+    // Add to meal plan
+    setMealPlan((prev) => ({
+      ...prev,
+      [`${formattedDate}-${mealType}`]: recipe,
+    }));
+
+    toast({
+      title: 'Added to meal plan',
+      description: `${recipe.title} added to your meal plan for ${date instanceof Date ? date.toLocaleDateString() : date} (${mealType}).`,
     });
   };
 
@@ -320,7 +347,51 @@ export default function MealPlanning() {
                 </div>
               </div>
 
-              <ScrollArea className="h-[calc(100vh-400px)]">
+              <div className="mb-3">
+                <Label className="text-muted-foreground mb-1 block text-xs">
+                  Filter by tag:
+                </Label>
+                <ScrollArea className="mb-2 h-[100px] pr-3">
+                  <div className="space-y-1">
+                    <Button
+                      variant={activeTag === null ? 'secondary' : 'ghost'}
+                      size="sm"
+                      className="w-full justify-start"
+                      onClick={() => setActiveTag(null)}
+                    >
+                      All Tags
+                    </Button>
+
+                    {allTags.map((tag) => (
+                      <Button
+                        key={tag}
+                        variant={activeTag === tag ? 'secondary' : 'ghost'}
+                        size="sm"
+                        className="w-full justify-start"
+                        onClick={() => setActiveTag(tag)}
+                      >
+                        <span className="truncate">{tag}</span>
+                      </Button>
+                    ))}
+                  </div>
+                </ScrollArea>
+
+                {activeTag && (
+                  <div className="flex items-center">
+                    <Badge className="mr-2">{activeTag}</Badge>
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      onClick={() => setActiveTag(null)}
+                    >
+                      <X className="mr-1 size-3" />
+                      Clear
+                    </Button>
+                  </div>
+                )}
+              </div>
+
+              <ScrollArea className="h-[calc(100vh-500px)]">
                 <div className="space-y-3 pr-3">
                   {filteredRecipes.map((recipe) => (
                     <RecipeCard
@@ -361,6 +432,7 @@ export default function MealPlanning() {
                 mealPlan={mealPlan}
                 onDrop={handleCalendarDrop}
                 onRemoveMeal={removeMeal}
+                addRecipeToMealPlan={addRecipeToMealPlan}
               />
             </TabsContent>
 
@@ -399,6 +471,7 @@ export default function MealPlanning() {
                                       <Image
                                         src={meal.image || '/placeholder.svg'}
                                         alt={meal.title}
+                                        fill
                                         className="object-cover"
                                       />
                                     </div>
@@ -441,14 +514,19 @@ export default function MealPlanning() {
             <TabsContent value="day" className="space-y-4">
               <div className="flex justify-center">
                 <Select defaultValue="monday">
-                  {DAYS.map((day) => (
-                    <SelectItem
-                      key={day.toLowerCase()}
-                      value={day.toLowerCase()}
-                    >
-                      {day}
-                    </SelectItem>
-                  ))}
+                  <SelectTrigger>
+                    <SelectValue placeholder="Select a day" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {DAYS.map((day) => (
+                      <SelectItem
+                        key={day.toLowerCase()}
+                        value={day.toLowerCase()}
+                      >
+                        {day}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
                 </Select>
               </div>
 
@@ -474,6 +552,7 @@ export default function MealPlanning() {
                                     '/placeholder.svg'
                                   }
                                   alt={getMeal('Monday', mealType).title}
+                                  fill
                                   className="object-cover"
                                 />
                               </div>
@@ -502,7 +581,7 @@ export default function MealPlanning() {
                         ) : (
                           <div className="text-muted-foreground flex h-full items-center justify-center">
                             <p>Drag a recipe here or</p>
-                            <AddMealButton className="ml-2" />
+                            <AddMealButton />
                           </div>
                         )}
                       </div>
@@ -512,6 +591,7 @@ export default function MealPlanning() {
               </div>
             </TabsContent>
           </Tabs>
+          <Toaster />
         </div>
       </div>
     </div>
